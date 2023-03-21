@@ -11,13 +11,13 @@
 </head>
 
 <body>
-    <!-- Nested Local State
+    <!-- Nested Local State -->
     <div x-data="{nama: 'Affah iyah deck'}">
         <div x-data="{umur: '700 tahun'}">
             <p><span x-text="nama"></span></p>
             <p><span x-text="umur"></span></p>
         </div>
-    </div> -->
+    </div>
 
 
     <!-- <br>
@@ -34,11 +34,12 @@
     <br> -->
 
     <!-- Global State -->
-    <!-- <script>
-        document.addEventListener('alpine:init', ()=> {
+    <script>
+        document.addEventListener('alpine:init', () => {
             Alpine.store('mahasiswa', {
-                tahun:2003, 
-                nama: ['Alimnfl','Supi', 'Dafa']});
+                tahun: 2003,
+                nama: ['Alimnfl', 'Supi', 'Dafa']
+            });
         });
     </script>
     <div x-data>
@@ -47,7 +48,7 @@
                 <li x-text="nm"></li>
             </template>
         </ul>
-    </div> -->
+    </div>
 
     <!-- <br>
     <br>
@@ -116,19 +117,150 @@
         <button @mouseenter="window.alert(pesan)" class="py-2 px-5 bg-blue-600 text-white rounded-md">Klik saya</button>
     </div> -->
 
-    <!-- Pemakaian Event -->
-    <div x-data="{pesan: 'Hello Alimnfl!'}"
-        class="container mx-auto w-3/4 text-center mt-10 bg-lime-200 p-10 rounded-xl shadow">
-        <button @click="ubahWarna" id="tombolPesan" data-pesan="Hello World"
-            class="py-2 px-5 bg-blue-600 text-white rounded-md">Klik
-            saya</button>
+    <!-- PENGGUNAAN EVENT -->
+
+    <!-- Once Modifier Event Modifier Prevent -->
+
+    <!-- <div x-data="{pesan: 'Hello Alimnfl!'}" @click="alert('div diklik!')"
+        class="container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+
+        <label for="nama" class="text-sm font-medium text-grey-900 block mb-2">Masukkan Nama</label>
+        <input type="text" @keyup.debounce="console.log($event.target.value)"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+        <button @click.stop="alert('Button diklik')"
+            class="py-2 px-5 bg-blue-600 text-white rounded-md bg-slate-500 mt-3">Klik
+            saya!</button>
+
+    </div> -->
+
+    <!-- Once Modifier Event Modifier Prevent -->
+
+    <!-- <div x-data="{pesan: 'Hello Alimnfl!'}" @click="alert('div diklik!')"
+        class="container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+
+        <label for="nama" class="text-sm font-medium text-grey-900 block mb-2">Masukkan Nama</label>
+        <input type="text" @keyup.once="console.log($event.target.value)"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+        <button @click.stop="alert('Button diklik')"
+            class="py-2 px-5 bg-blue-600 text-white rounded-md bg-slate-500 mt-3">Klik
+            saya!</button>
+
+    </div> -->
+
+    <!-- Outside & Windows Modifier Event Modifier Prevent -->
+
+    <!-- Opsi bisa memakai yang
+            @click.outside="open = false"
+            @keyup.esc.window="open = false"
+            -->
+
+    <div x-data="{open: false}" class="container mx-auto w-1/2 text-center mt-10 bg-lime-200 p-10 rounded-xl shadow">
+        <button @click="open= !open" x-text="open ? 'Kaga dulu dah' : 'Buka'" @keyup.esc.window="open = false"
+            x-bind:class="open ? 'bg-red-600' : 'bg-slate-600'" class="py-2 px-5 text-white rounded-md">Buka</button>
+
+        <div x-show="open" x-transition.origin.bottom.duration.500ms
+            class="w-3/4 mx-auto mt-4 p-5 bg-blue-400 rounded text-white">
+            AW Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora error neque sit similique soluta quod
+        </div>
     </div>
 
-    <script>
+
+    <!-- Stop Modifier Event, hentikan event bubling -->
+
+    <!-- <div x-data="{pesan: 'Hello Alimnfl!'}" @click="alert('div diklik!')"
+        class="container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+
+        <label for="nama" class="text-sm font-medium text-grey-900 block mb-2">Masukkan Nama</label>
+        <input type="text" @keyup.enter="alert('Data terkirim')"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+        <button @click.stop="alert('Button diklik')"
+            class="py-2 px-5 bg-blue-600 text-white rounded-md bg-slate-500 mt-3">Klik
+            saya!</button>
+
+    </div> -->
+
+
+    <!-- Prevent Modifier Event -->
+
+    <!-- <div x-data="{pesan: 'Hello Alimnfl!'}" @log="alert('data telah dikirim oleh ' + $event.detail.nama)"
+        class="container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+        <form action="/post" @submit.prevent="alert('Data dikirim oleh AlpineJS')">
+            <label for="nama" class="text-sm font-medium text-grey-900 block mb-2">Masukkan Nama</label>
+            <input type="text" @keyup.enter="alert('Data terkirim')"
+                class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+            <button type="submit" class="py-2 px-5 bg-blue-600 text-white rounded-md bg-slate-500 mt-3">Klik
+                saya!</button>
+        </form>
+    </div> -->
+
+    <!-- Pemakaian X-MODEL BIND -->
+
+    <!-- Pemakaian X-MODEL BIND -->
+
+    <div x-data="{pesan: '', open: true, hobby: []}"
+        class=" container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+        <label for="nama" class="text-sm font-medium text-gray-900 block mb-2">Masukkan Pesan</label>
+        <textarea x-model="pesan" type="text"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></textarea>
+        <span x-text="pesan.length" class="text-lg flex text-green-500 font-bold"
+            :class="pesan.length > 20 ? 'text-red-500' : ''"></span>
+
+        <input x-model="open" type="checkbox" id="checkbox">
+        <label for="checkbox" x-text="!open ? 'Kosong' : 'Terisi'"></label>
+
+        <div class="mt-5">
+            <div class="flex item-center mb-2">
+                <input x-model="hobby" type="checkbox" id="menulis" value="menulis"
+                    class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                <label for="menulis" class="ml-2 text-sm">Menulis</label>
+            </div>
+            <div class="flex item-center mb-2">
+                <input x-model="hobby" type="checkbox" id="bernyanyi" value="bernyanyi"
+                    class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                <label for="bernyanyi" class="ml-2 text-sm">Bernyanyi</label>
+            </div>
+            <div class="flex item-center mb-2">
+                <input x-model="hobby" type="checkbox" id="mengoding" value="mengoding"
+                    class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                <label for="Coding" class="ml-2 text-sm">Coding</label>
+            </div>
+            <p class="text-left text-sm">Hobby: <span
+                    x-text="hobby.map(h => h.charAt(0).toUpperCase() + h.slice(1))"></span></p>
+        </div>
+
+    </div>
+
+
+    <!-- KeyUp - Pemakaian untuk diklik enter, dll -->
+
+    <!-- <div x-data="{pesan: 'Hello Alimnfl!'}" @log="alert('data telah dikirim oleh ' + $event.detail.nama)"
+        class="container mx-auto w-3/4 text-center mt-10 bg-red-200 p-10 rounded-xl shadow">
+
+        <label for="nama" class="text-sm font-medium text-grey-900 block mb-2">Masukkan Nama</label>
+        <input type="text" @keyup.enter="alert('Data terkirim')"
+            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+        <button @click="$dispatch('log', {nama: 'Alim'})" id="tombolPesan" data-pesan="Hello World"
+            class="py-2 px-5 bg-blue-600 text-white rounded-md bg-slate-500 mt-3">Klik saya!</button>
+    </div> -->
+
+
+
+    <!-- Pemakaian Event Script -->
+    <!-- <script>
         function ubahWarna(e) {
-            e.target.classlist.add('bg-red-500');
+            e.target.classList.add('bg-red-500');
         }
-    </script>
+    </script> -->
 
 </body>
 
